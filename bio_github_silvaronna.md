@@ -22,8 +22,8 @@
 - HPE & Dell Server Management, Fortigate, Mikrotik.
 
 **Tools:**
-- Docker, Vagrant, Cloudflared, NginX, Grafana.
-- Bash scripting, Ansible.
+- Docker, Cloudflare, Kubernetes, Grafana, RedHat.
+- Bash scripting, Ansible, Jenkins.
 
 ---
 
@@ -34,6 +34,7 @@
 - Manage and Configure Fortigate Firewall Device
 - Linux Server Administration
 - Bash Scripting Automation
+- Robust Multi Data Source Grafana Monitoring System
 
 ---
 
@@ -48,3 +49,4 @@
 ### ☕ Fun Fact
 
 I ride 40km daily on my motorcycle for work while pursuing my Bachelor Degree — rain or shine XOXOXOXOXOXO
+
