@@ -1,14 +1,23 @@
-const http = require('http');
+const express = require('express');
+const app = express();
+const PORT = 3000;
 
-const hostname = '127.0.0.1';
-const port = 3000;
+// Import route
+const aboutUsRoute = require('./routes/aboutUsRoute');
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello, World!');
+// Route About Us
+app.use('/aboutus', aboutUsRoute);
+
+
+app.get('/', (req, res) => {
+  res.send('<p>Hello world!</p>');
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server berjalan di http://${hostname}:${port}/`);
+// Kalo routenya gak ada, kirim 404
+app.use((req, res) => {
+  res.status(404).send('<h1>404 Not Found</h1><p>Halaman tidak ditemukan</p>');
+});
+
+app.listen(PORT, () => {
+  console.log(`Server berjalan di http://localhost:${PORT}/`);
 });
