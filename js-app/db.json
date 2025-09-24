@@ -1,0 +1,22 @@
+{
+  "users": [
+    {
+      "username": "silvaronna",
+      "name": "Azka Abdillah",
+      "email": "silvaronna@mail.com",
+      "role": "buyer"
+    },
+    {
+      "username": "mjaya69703",
+      "name": "Muhamad Jaya Kusuma",
+      "email": "mjaya69703@mail.com",
+      "role": "buyer"
+    },
+    {
+      "username": "FFairuz",
+      "name": "Fairuz Fajri",
+      "email": "FFairuz@mail.com",
+      "role": "buyer"
+    }
+  ]
+}

@@ -5,12 +5,19 @@ const PORT = 3000;
 // Import routes
 const aboutUsRoute = require('./routes/aboutUsRoute');
 const greetingRoutes = require('./routes/greetingRoutes');
+const userRoutes = require('./routes/userRoutes');
+
+// middleware untuk auto-konvert ke format json
+app.use(express.json());
 
 // Route About Us
 app.use('/aboutus', aboutUsRoute);
 
 // Route Greeting
 app.use('/greeting', greetingRoutes);
+
+// Route User Management
+app.use('/users', userRoutes);
 
 
 app.get('/', (req, res) => {
