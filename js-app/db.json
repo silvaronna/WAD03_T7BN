@@ -18,5 +18,16 @@
       "email": "FFairuz@mail.com",
       "role": "buyer"
     }
+  ],
+  "carts": [
+    {
+      "username": "silvaronna",
+      "items": [
+        {
+          "productId": "sku_123",
+          "quantity": 4
+        }
+      ]
+    }
   ]
 }
