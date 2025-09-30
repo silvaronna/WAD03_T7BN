@@ -6,7 +6,8 @@ const PORT = 3000
 const aboutUsRoute = require("./routes/aboutUsRoute")
 const greetingRoutes = require("./routes/greetingRoutes")
 const userRoutes = require("./routes/userRoutes")
-const cartRoutes = require("./routes/cartRoutes") // register carts routes
+const cartRoutes = require("./routes/cartRoutes")
+const productRoutes = require("./routes/productRoutes") // Add product routes
 
 // middleware untuk auto-konvert ke format json
 app.use(express.json())
@@ -21,7 +22,10 @@ app.use("/greeting", greetingRoutes)
 app.use("/users", userRoutes)
 
 // Route Cart Management
-app.use("/carts", cartRoutes) // mount carts routes under /carts
+app.use("/carts", cartRoutes)
+
+// Route Product Management
+app.use("/products", productRoutes) // Add product routes
 
 app.get("/", (req, res) => {
   res.send("<p>Hello world!</p>")
