@@ -1,114 +1,44 @@
-const fs = require("fs");
-const path = require("path");
-
-// path file json
-const DBpath = path.join(__dirname, "../db.json");
-
-// baca isi file db.json 
-function readDB(){
-    const data = fs.readFileSync(DBpath, "utf-8");
-    return JSON.parse(data);
-}
-
-// tulis isi file db.json
-function writeDB(data){
-    fs.writeFileSync(DBpath, JSON.stringify(data, null, 2), "utf-8");
-}
+const userService = require("../services/userService");
 
 const userController = {
     // untuk get all users
     getAllUsers: (req, res) => {
-        const db = readDB();
-        res.json(db.users);
+        const users = userService.getAllUsers();
+        res.json(users);
     },
 
     // untuk tambah user
     addUser: (req, res) => {
         try {
-            const db = readDB();
-            const { username, name, email, role } = req.body;
-
-            if (!username || !name || !email || !role) {
-                return res.status(400).json({ error: "Semua field wajib diisi" });
-            }
-
-            // Validasi username unik
-            if (db.users.find(u => u.username === username)) {
-                return res.status(400).json({ error: "username sudah dipakai" });
-            }
-
-            // jika bukan buyer/seller tolak
-            if (!["buyer", "seller"].includes(role)) {
-                return res.status(400).json({ error: "role tidak valid! hanya buyer/seller" });
-            }
-
-            const newUser = { username, name, email, role };
-
-            db.users.push(newUser);
-            writeDB(db);
-
-            // res.status(201).json(newUser);
+            const newUser = userService.addUser(req.body)
             res.status(201).json({ 
                 success: true,
                 message: "User berhasil ditambahkan",
                 data: newUser
             })
         } catch (err) {
-            return res.status(500).json({ success: false, error: "Terjadi kesalahan saat membuat user" });
+            res.status(err.status || 500).json({ success: false, message: err.message });        
         }
     },
 
     updateUser: (req, res) => {
         try {
-            const { username } = req.params;
-            const { name, email, role } = req.body;
+            const updatedUser = userService.updateUser(req.params.username, req.body)
 
-            const db = readDB();
-            const user = db.users.find(u => u.username === username);
-
-            if (!user) {
-                return res.status(404).json({ error: "User tidak ditemukan" });
-            }
-
-            if (role && !["buyer", "seller"].includes(role)) {
-                return res.status(400).json({ error: "role tidak valid! hanya buyer/seller" });
-            }
-
-            if (name) user.name = name;
-            if (email) user.email = email;
-            if (role) user.role = role;
-
-            writeDB(db);
             res.status(200).json({ 
                 success: true,
                 message: "User berhasil diupdate",
-                data: user
+                data: updatedUser
             })
-            // res.json(user);
         } catch (err) {
-            return res.status(500).json({ success: false, error: "Terjadi kesalahan saat mengupdate user" });
+            return res.status(err.status || 500).json({ success: false, error: err.message || "Terjadi kesalahan saat mengupdate user" });
         }
     },
 
     deleteUser: (req, res) => {
         try {
-            const { username } = req.params;
-
-            const db = readDB();
-            const userIndex = db.users.findIndex(u => u.username === username);
-
-            if (userIndex === -1) {
-                return res.status(404).json({ success: false, error: "User tidak ditemukan" });
-            }
-
-            // save data user untuk dikirim ke message
-            const deletedUser = db.users[userIndex];
-
-            // hapus user dari array
-            db.users.splice(userIndex, 1);
-
-            // save ke Json
-            writeDB(db);
+   
+            const deletedUser = userService.deleteUser(req.params.username)
 
             return res.status(200).json({
                 success: true,
