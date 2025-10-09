@@ -1,10 +1,10 @@
-const cartService = require("../services/cartService")
+const CartService = require("../services/cartService")
 
-const cartController = {
-  getCart: (req, res) => {
+const CartController = {
+  getCart(req, res) {
     const { username } = req.params
     try {
-      const cart = cartService.getCart(username)
+      const cart = CartService.getCart(username)
       res.status(200).json({
         success: true,
         message: "Cart berhasil diambil",
@@ -18,10 +18,10 @@ const cartController = {
     }
   },
 
-  addToCart: (req, res) => {
+  addToCart(req, res) {
     const { username } = req.params
     try {
-      const cart = cartService.addToCart(username, req.body)
+      const cart = CartService.addToCart(username, req.body)
       res.status(200).json({
         success: true,
         message: "Produk berhasil ditambahkan ke cart",
@@ -35,10 +35,10 @@ const cartController = {
     }
   },
 
-  removeFromCart: (req, res) => {
+  removeFromCart(req, res) {
     const { username } = req.params
     try {
-      const cart = cartService.removeFromCart(username, req.body)
+      const cart = CartService.removeFromCart(username, req.body)
       res.status(200).json({
         success: true,
         message: "Produk berhasil dihapus/dikurangi dari cart",
@@ -53,4 +53,4 @@ const cartController = {
   },
 }
 
-module.exports = cartController
+module.exports = CartController
