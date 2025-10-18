@@ -1,5 +1,5 @@
-# 🛍️ SIAD Web App  
-**Project SIAD — Yang Penting Kelar 😎**  
+# 🛍️ **E-Commerce System**   
+**Project — Yang Penting Kelar 😎**  
 _Tim 7 (Bukan Naruto) | Mata Kuliah Web Application Development 03_
 
 ---
