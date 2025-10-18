@@ -16,10 +16,8 @@ Proyek ini dibuat untuk memenuhi tugas mata kuliah *Web Application Development*
 | Runtime | Node.js |
 | Framework | Express.js |
 | Database ORM | Prisma |
-| Database | SQLite / PostgreSQL (opsional) |
+| Database | PostgreSQL  |
 | Testing | Jest |
-| Format Data | JSON (db.json) |
-
 ---
 
 ## ⚙️ Installation & Setup
