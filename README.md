@@ -35,22 +35,31 @@ Proyek ini dibuat untuk memenuhi tugas mata kuliah *Web Application Development*
    npm install
    ```
 
-3. **Migrate database (via Prisma)**
+3. **Siapkan database**
 
    ```bash
-   npx prisma migrate dev
+   sudo -u postgres psql # login postgresql
+   CREATE DATABASE db_wad03_t7bn; # create database
+   
    ```
 
-4. **Run server**
+4. **Setel file .env**
+
+   ```bash
+   DATABASE_URL="postgresql://siad_user:password123@localhost:5432/db_wad03_t7bn"
+   ```
+
+5. **Migrasi skema DB dari Prisma, apply migration!**
+
+   ```bash
+   npx prisma generate
+   npx prisma migrate dev --name init_schema
+   ```
+
+6. **Jalankan server**
 
    ```bash
    npm start
-   ```
-
-5. **(Optional) Run tests**
-
-   ```bash
-   npm test
    ```
 
 Server akan berjalan di:
