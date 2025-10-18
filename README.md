@@ -72,8 +72,8 @@ Server akan berjalan di:
 
 ## 🪪 License
 
-This project is licensed under the **MIT License**.
-Feel free to use, modify, and share — with proper credit to Team 7.
+### This project is licensed under the **MIT License**.
+### Feel free to use, modify, and share — with proper credit to Team 7.
 ---
 
 ✨ *Made with caffeine, collaboration, and a bit of chaos.*
