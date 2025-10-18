@@ -20,9 +20,30 @@ model User {
   username String @unique
   email String @unique
   role Role
+  cart Cart?
 }
 
 enum Role {
   buyer
   seller
+}
+
+model Cart {
+  id       Int         @id @default(autoincrement())
+  user     User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   Int         @unique
+  items    CartItem[] 
+
+  @@map("Cart")
+}
+
+model CartItem {
+  id        Int    @id @default(autoincrement())
+  cart      Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  cartId    Int
+  productId String
+  quantity  Int
+
+  @@index([cartId])
+  @@map("CartItem")
 }

@@ -1,59 +1,83 @@
-const CartRepository = require("../repositories/cartRepository")
+// js-app/services/cartService.js
+const CartRepository = require("../repositories/cartRepository");
 
 function assertBuyer(user) {
-  if (!user) throw { code: 404, message: "User tidak ditemukan" }
-  if (user.role !== "buyer") throw { code: 403, message: "Role tidak valid, hanya buyer yang memiliki cart" }
+  if (!user) throw { code: 404, message: "User tidak ditemukan" };
+  if (user.role !== "buyer") throw { code: 403, message: "Role tidak valid, hanya buyer yang memiliki cart" };
 }
 
 function validatePayload(body) {
-  const productId = body?.productId
-  const qn = Number(body?.quantity)
-  const quantity = Number.isFinite(qn) ? Math.trunc(qn) : 1
+  const productId = body?.productId;
+  const qn = Number(body?.quantity);
+  const quantity = Number.isFinite(qn) ? Math.trunc(qn) : 1;
 
   if (!productId || typeof productId !== "string" || productId.trim() === "")
-    throw { code: 400, message: "Field 'productId' wajib diisi dan berupa string" }
+    throw { code: 400, message: "Field 'productId' wajib diisi dan berupa string" };
 
   if (quantity <= 0)
-    throw { code: 400, message: "Field 'quantity' harus lebih dari 0" }
+    throw { code: 400, message: "Field 'quantity' harus lebih dari 0" };
 
-  return { productId, quantity }
+  return { productId, quantity };
 }
 
 const CartService = {
-  getCart(username) {
-    const user = CartRepository.getUser(username)
-    assertBuyer(user)
-    return CartRepository.getCart(username)
+  async getCart(username) {
+    const user = await CartRepository.getUser(username);
+    assertBuyer(user);
+
+    const cart = await CartRepository.getCart(username);
+    // Normalisasi bentuk supaya mirip db.json strukture lama
+    return {
+      username,
+      items: cart.items.map((it) => ({
+        productId: it.productId,
+        quantity: it.quantity,
+      })),
+    };
   },
 
-  addToCart(username, body) {
-    const { productId, quantity } = validatePayload(body)
-    const user = CartRepository.getUser(username)
-    assertBuyer(user)
+  async addToCart(username, body) {
+    const { productId, quantity } = validatePayload(body);
+    const user = await CartRepository.getUser(username);
+    assertBuyer(user);
 
-    const cart = CartRepository.getCart(username)
-    const existing = cart.items.find((i) => i.productId === productId)
+    const cart = await CartRepository.getCart(username);
+    const items = cart.items.slice(); // shallow copy
 
-    if (existing) existing.quantity += quantity
-    else cart.items.push({ productId, quantity })
+    const existing = items.find((i) => i.productId === productId);
 
-    return CartRepository.updateCart(username, cart)
+    if (existing) {
+      existing.quantity += quantity;
+    } else {
+      items.push({ productId, quantity });
+    }
+
+    const updatedCart = await CartRepository.updateCart(username, { username, items });
+    return {
+      username,
+      items: updatedCart.items.map((it) => ({ productId: it.productId, quantity: it.quantity })),
+    };
   },
 
-  removeFromCart(username, body) {
-    const { productId, quantity } = validatePayload(body)
-    const user = CartRepository.getUser(username)
-    assertBuyer(user)
+  async removeFromCart(username, body) {
+    const { productId, quantity } = validatePayload(body);
+    const user = await CartRepository.getUser(username);
+    assertBuyer(user);
 
-    const cart = CartRepository.getCart(username)
-    const idx = cart.items.findIndex((i) => i.productId === productId)
-    if (idx === -1) throw { code: 404, message: "Produk tidak ditemukan di cart" }
+    const cart = await CartRepository.getCart(username);
+    const items = cart.items.slice();
+    const idx = items.findIndex((i) => i.productId === productId);
+    if (idx === -1) throw { code: 404, message: "Produk tidak ditemukan di cart" };
 
-    cart.items[idx].quantity -= quantity
-    if (cart.items[idx].quantity <= 0) cart.items.splice(idx, 1)
+    items[idx].quantity -= quantity;
+    if (items[idx].quantity <= 0) items.splice(idx, 1);
 
-    return CartRepository.updateCart(username, cart)
+    const updatedCart = await CartRepository.updateCart(username, { username, items });
+    return {
+      username,
+      items: updatedCart.items.map((it) => ({ productId: it.productId, quantity: it.quantity })),
+    };
   },
-}
+};
 
-module.exports = CartService
+module.exports = CartService;
