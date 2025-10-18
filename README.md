@@ -1,5 +1,5 @@
 # 🛍️ **E-Commerce System**   
-**Project — Yang Penting Kelar 😎**  
+**Project — Alhamdulillah Kelar 😎**  
 _Tim 7 (Bukan Naruto) | Mata Kuliah Web Application Development 03_
 
 ---
