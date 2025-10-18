@@ -26,8 +26,8 @@ Proyek ini dibuat untuk memenuhi tugas mata kuliah *Web Application Development*
 
 1. **Clone repository**
    ```bash
-   git clone https://github.com/yourusername/siad-webapp.git
-   cd siad-webapp/js-app
+   git clone https://github.com/silvaronna/WAD03_T7BN.git
+   cd WAD03_T7BN/js-app
 
 2. **Install dependencies**
 
