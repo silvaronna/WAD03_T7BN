@@ -1,57 +1,35 @@
-const fs = require("fs");
-const path = require("path");
-
-// path file json
-const DBpath = path.join(__dirname, "../db.json");
-
-// baca isi file db.json 
-function readDB(){
-    const data = fs.readFileSync(DBpath, "utf-8");
-    return JSON.parse(data);
-}
-
-// tulis isi file db.json
-function writeDB(data){
-    fs.writeFileSync(DBpath, JSON.stringify(data, null, 2), "utf-8");
-}
+const { PrismaClient } = require('../generated/prisma');
+const prisma = new PrismaClient();
 
 const userRepository = {
-    getAll: () => {
-        const db = readDB()
-        return db.users
+    getAll: async () => {
+        const users = await prisma.user.findMany();
+        return users;
     },
 
-    findByUsername: (username) => {
-        const db = readDB();
-        return db.users.find((u) => u.username === username)
+    findByUsername: async (username) => {
+        return await prisma.user.findUnique({
+            where: { username }
+        });
     },
 
-    add: (userData) => {
-        const db = readDB()
-        db.users.push(userData)
-        writeDB(db)
-        return userData
+    add: async (userData) => {
+        return await prisma.user.create({
+            data: userData
+        });
     },
 
-    update: (username, updatedData) => {
-        const db = readDB()
-        const user = db.users.find((u) => u.username === username)
-        if (!user) return null;
-
-        Object.assign(user, updatedData)
-        writeDB(db)
-        return user;
+    update: async (username, updatedData) => {
+        return await prisma.user.update({
+            where: { username },
+            data: updatedData
+        });
     },
 
-    delete: (username) => {
-        const db = readDB()
-        const index = db.users.findIndex((u) => u.username === username)
-        if (!index === -1) return null;
-
-        const deleted = db.users[index]
-        db.users.splice(index, 1) 
-        writeDB(db)
-        return deleted;
+    delete: async (username) => {
+        return await prisma.user.delete({
+            where: { username }
+        });
     },
 };
 
