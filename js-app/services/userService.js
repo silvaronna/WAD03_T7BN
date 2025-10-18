@@ -1,16 +1,16 @@
 const userRepository = require("../repositories/userRepository");
 
 const userService = {
-    getAllUsers: () => {
-        return userRepository.getAll()
+    getAllUsers:  async () => {
+        return await userRepository.getAll()
     },
 
-    addUser: ({ username, name, email, role }) => {
+    addUser: async ({ username, name, email, role }) => {
         if(!username || !name || !email || !role){
             throw { status: 404, message: "semua field wajib diisi!"}
         }
-        
-        if(userRepository.findByUsername(username)){
+
+        if(await userRepository.findByUsername(username)){
             throw { status: 409,  message: "username sudah digunakan!" }
         }
 
@@ -20,11 +20,11 @@ const userService = {
 
         const newUser = { username, name, email, role }
 
-        return userRepository.add(newUser)
+        return await userRepository.add(newUser)
     },
 
-    updateUser: (username, { name, email, role }) => {
-        const user = userRepository.findByUsername(username)
+    updateUser: async (username, { name, email, role }) => {
+        const user = await userRepository.findByUsername(username)
 
         if(!user){
             throw { status: 404, message: "User tidak ditemukan!" }
@@ -39,11 +39,11 @@ const userService = {
         if (email) updatedData.email = email;
         if (role) updatedData.role = role;
 
-        return userRepository.update(username, updatedData)
+        return await userRepository.update(username, updatedData)
     },
 
-    deleteUser: (username) => {
-        const deleted = userRepository.delete(username)
+    deleteUser: async (username) => {
+        const deleted = await userRepository.delete(username)
 
         if (!deleted){
             throw { status: 404, message: "User tidak ditemukan" }
