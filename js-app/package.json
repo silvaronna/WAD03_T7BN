@@ -4,7 +4,13 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "jest"
+    "test": "jest",
+    "db:setup": "node setup-database.js",
+    "db:migrate": "npx prisma migrate dev",
+    "db:generate": "npx prisma generate",
+    "db:studio": "npx prisma studio",
+    "db:reset": "npx prisma migrate reset --force",
+    "db:seed": "node prisma/seed.js"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +20,7 @@
     "@prisma/client": "^6.17.1",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "fs": "0.0.1-security",
     "lucide-react": "0.544.0",
