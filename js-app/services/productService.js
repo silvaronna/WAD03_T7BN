@@ -1,20 +1,8 @@
 const productRepository = require("../repositories/productRepository");
-const fs = require("fs");
-const path = require("path");
+const userRepository = require("../repositories/userRepository");
 
-const DBpath = path.join(__dirname, "../db.json");
-
-function readDB() {
-  try {
-    const data = fs.readFileSync(DBpath, "utf-8");
-    return JSON.parse(data);
-  } catch (e) {
-    return { users: [], carts: [], products: [] };
-  }
-}
-
-function findUser(db, username) {
-  return db.users?.find((u) => u.username === username);
+async function findUser(username) {
+  return await userRepository.findByUsername(username);
 }
 
 function validateProductPayload({ product_name, product_category, price }) {
@@ -62,8 +50,7 @@ const productService = {
       throw { status: 400, message: "Username wajib diisi" };
     }
 
-    const db = readDB();
-    const user = findUser(db, username);
+    const user = await findUser(username);
     assertValidUser(user);
 
     return await productRepository.getAll();
@@ -74,8 +61,7 @@ const productService = {
       throw { status: 400, message: "Username wajib diisi" };
     }
 
-    const db = readDB();
-    const user = findUser(db, username);
+    const user = await findUser(username);
     assertValidUser(user);
 
     const product = await productRepository.findByName(productName);
@@ -93,8 +79,7 @@ const productService = {
 
     const validatedData = validateProductPayload({ product_name, product_category, price });
 
-    const db = readDB();
-    const user = findUser(db, username);
+    const user = await findUser(username);
     assertSeller(user);
 
     // Check if product name already exists
@@ -118,8 +103,7 @@ const productService = {
 
     const validatedData = validateProductPayload({ product_name, product_category, price });
 
-    const db = readDB();
-    const user = findUser(db, username);
+    const user = await findUser(username);
     assertSeller(user);
 
     const product = await productRepository.findByName(productName);
@@ -148,8 +132,7 @@ const productService = {
       throw { status: 400, message: "Username wajib diisi" };
     }
 
-    const db = readDB();
-    const user = findUser(db, username);
+    const user = await findUser(username);
     assertSeller(user);
 
     const product = await productRepository.findByName(productName);

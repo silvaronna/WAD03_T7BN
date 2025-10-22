@@ -1,4 +1,5 @@
 node_modules/
 /generated/prisma
 .env
-db.json
+api-tests.json
+TESTING_GUIDE.md
