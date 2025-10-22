@@ -16,9 +16,7 @@ router.get('/:user', (req, res) => {
     }
   };
 
-  // Format JSON with proper indentation (2 spaces)
-  res.set('Content-Type', 'application/json');
-  res.send(JSON.stringify(response, null, 2));
+  res.json(response);
 });
 
 module.exports = router;
