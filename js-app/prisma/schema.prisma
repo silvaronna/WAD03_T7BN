@@ -47,3 +47,14 @@ model CartItem {
   @@index([cartId])
   @@map("CartItem")
 }
+
+model Product {
+  id               Int      @id @default(autoincrement())
+  product_name     String   @unique
+  product_category String
+  price            Float
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  @@map("Product")
+}
