@@ -53,6 +53,7 @@ model Product {
   product_name     String   @unique
   product_category String
   price            Float
+  owner            String
   created_at       DateTime @default(now())
   updated_at       DateTime @updatedAt
 
