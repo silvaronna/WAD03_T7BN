@@ -5,7 +5,7 @@ const productController = require('../controllers/productController')
 // POST /products/ - Create new product (Seller only)
 router.post('/', productController.createProduct)
 
-// GET /products/ - Get all products (Buyer and Seller)
+// GET /products/ - Get all products or products by username (Buyer and Seller)
 router.get('/', productController.getAllProducts)
 
 // GET /products/:product_name - Get product by name (Buyer and Seller)
