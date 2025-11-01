@@ -19,15 +19,24 @@ const productController = {
     }
   },
 
-  // GET /products/ - Get all products (Buyer and Seller)
+  // GET /products/ - Get all products or products by username (Buyer and Seller)
   getAllProducts: async (req, res) => {
     try {
       const { username } = req.query;
-      const products = await productService.getAllProducts(username);
+      let products;
+      let message;
+      
+      if (username) {
+        products = await productService.getProductByUsername(username);
+        message = "Daftar produk milik " + username + " berhasil diambil";
+      } else {
+        products = await productService.getAllProducts();
+        message = "Daftar produk berhasil diambil";
+      }
       
       res.status(200).json({
         success: true,
-        message: "Daftar produk berhasil diambil",
+        message: message,
         data: products,
         total: products.length
       });

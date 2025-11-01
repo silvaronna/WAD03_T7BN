@@ -45,7 +45,11 @@ function assertSeller(user) {
 }
 
 const productService = {
-  getAllProducts: async (username) => {
+  getAllProducts: async () => {
+    return await productRepository.getAll();
+  },
+
+  getProductByUsername: async (username) => {
     if (!username) {
       throw { status: 400, message: "Username wajib diisi" };
     }
@@ -53,7 +57,7 @@ const productService = {
     const user = await findUser(username);
     assertValidUser(user);
 
-    return await productRepository.getAll();
+    return await productRepository.findByUsername(username);
   },
 
   getProductByName: async (productName, username) => {

@@ -7,6 +7,12 @@ const productRepository = {
         return products;
     },
 
+    findByUsername: async (username) => {
+        return await prisma.product.findMany({
+            where: { owner: username }
+        });
+    },
+
     findByName: async (productName) => {
         return await prisma.product.findUnique({
             where: { product_name: productName }
